@@ -18,7 +18,6 @@ body {
   padding: 25px;
   background-color: beige;
 
-  
   .title {
     font-size: 36px;
   }
@@ -28,5 +27,24 @@ body {
     flex-direction: column;
     align-items: end;
     gap: 15px;
+
+    .label {
+      font-size: 24px;
+    }
+
+    .field {
+      margin-inline-start: 15px;
+      border: none;
+      border-radius: 3px;
+      padding: 10px;
+      font-size: 21px;
+      background-color: burlywood;
+      transition: background-color linear 0.2s ;
+    }
+    .field:hover,
+    .field:active,
+    .field:focus {
+      background-color: rgb(219, 168, 100);
+    }
   }
 }

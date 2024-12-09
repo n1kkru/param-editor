@@ -17,7 +17,6 @@ type TParamValue = {
 };
 interface Model {
   paramValues: TParamValue[];
-  // colors: Color[];
 }
 interface ParamEditorProps {
   params: TParam[];
@@ -34,7 +33,7 @@ const getParamsApi = () =>
     checkResponse<TParam[]>(res)
   );
 
-const updateModelApi = (newParam : TParamValue) =>
+const updateModelApi = (newParam : TParamValue[]) =>
   fetch(`https://923a0b9f4b739d12.mokky.dev/model/0`, {
     method: "PATCH",
     headers: {
@@ -42,7 +41,7 @@ const updateModelApi = (newParam : TParamValue) =>
       "Accept": "application/json"
     },
     body: JSON.stringify({
-      "paramValues": [newParam]
+      "paramValues": newParam
 
     })
   })
@@ -61,7 +60,9 @@ const ParamEditor = () => {
             "value": ""
         }
     ]
-});
+  });
+
+  const getModel = () => model.paramValues;
 
   useEffect(() => {
     getModelApi().then((data) => {
@@ -91,17 +92,16 @@ const ParamEditor = () => {
                   model?.paramValues?.find((elem) => elem.paramId === param.id)
                     ?.value
                 }
-                onChange={(e) => {
-                  // updateModelApi({ paramId : param.id, value: e.target.value});
-                  // model?.paramValues?.find((elem) => elem.paramId === param.id)
-                  const newPosts = model.paramValues.map((elem) => {
+                onBlur={(e) => {
+                  const newModel = model.paramValues.map((elem) => {
 
                     
                     return elem.paramId === param.id
                       ? {...model.paramValues[elem.paramId-1], value: e.target.value}
                       : {...model.paramValues[elem.paramId-1]}
                   });
-                  console.log(newPosts)
+                  updateModelApi(newModel)
+                  setModel({paramValues: newModel})
                 }}
               />
             </label>
